@@ -9,7 +9,20 @@ export const commentApi = createApi({
     baseUrl: BASE_URL,
   }),
   tagTypes: ['Comments'],
-  endpoints: (builder) => ({}),
-});
+  endpoints: (builder) => ({
+    getComments: builder.query({
+      query: () => 'https://api.fake.rest/aa1af2b3-7f00-479d-be6b-85a5ef53e301/get',  
+    }),
+    addComments: builder.mutation({
+      query: (body) => ({
+        url: 'https://api.fake.rest/aa1af2b3-7f00-479d-be6b-85a5ef53e301/post',
+        method: 'POST',
+        body,
+      }),
+      invalidatesTags: ['Comments'],
+    }),
+  }),
+  })
 
-export const {} = commentApi;
+
+export const {useGetCommentsQuery, useAddCommentsMutation} = commentApi;

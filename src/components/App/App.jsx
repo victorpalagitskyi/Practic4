@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { Layout } from '../../layout/Layout/Layout';
 import { routes } from '../../routes';
 import { Home, Options } from '../../views';
 
 export const App = () => {
+
   return (
     <>
       <Routes>

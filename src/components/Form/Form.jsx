@@ -2,19 +2,33 @@ import React, { useState } from 'react';
 import toast from 'react-hot-toast';
 import { BiMailSend } from 'react-icons/bi';
 import styles from './Form.module.css';
+import { useAddCommentsMutation } from '../../redux/commentApi';
 
 export const Form = () => {
   const [author, setAuthor] = useState('');
   const [content, setContent] = useState('');
-
+  const [addContact, { isLoading } ] = useAddCommentsMutation()
   const onHandleChange = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
+    switch (name) { 
+      case 'name':
+        setAuthor(value)
+        break;
+      case 'text':
+        setContent(value)
+        break
+    }
   };
-
-  const onHandleSubmit = (e) => {
+  
+  const onHandleSubmit = async (e) => {
     e.preventDefault();
-
+    try {
+      await addContact({
+        author,
+        content,
+    }) }
+    catch (error) { console.log(error)}
+      
     setAuthor('');
     setContent('');
   };
