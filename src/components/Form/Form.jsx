@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { BiMailSend } from 'react-icons/bi';
 import styles from './Form.module.css';
 import { useAddCommentsMutation } from '../../redux/commentApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCommentsData, setCommentsData } from '../../redux/commentsDataSlice';
 
 export const Form = () => {
+  const [data, setData] = useState([])
+  const dispatch = useDispatch()
+  const comments = useSelector(selectCommentsData)
   const [author, setAuthor] = useState('');
   const [content, setContent] = useState('');
   const [addContact, { isLoading } ] = useAddCommentsMutation()
+  useEffect(() => { 
+    if (data.length > 0) { 
+      dispatch(setCommentsData([...comments, data[0]]))
+    }
+  }, [data])
   const onHandleChange = (e) => {
     const { name, value } = e.target;
     switch (name) { 
@@ -23,15 +33,18 @@ export const Form = () => {
   const onHandleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await addContact({
+  const resalut = await addContact({
         author,
         content,
-    }) }
+  })
+        setData([resalut.data])  
+        
+    }
     catch (error) { console.log(error)}
       
     setAuthor('');
     setContent('');
-  };
+  }; 
 
   return (
     <div className={styles.formWrapper}>

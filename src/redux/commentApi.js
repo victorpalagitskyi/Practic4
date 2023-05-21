@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const API_ENDPOINT = '/comments';
-const BASE_URL = '';
+const BASE_URL = 'https://6469cb4503bb12ac2092bf99.mockapi.io';
 
 
 export const commentApi = createApi({
@@ -12,18 +12,33 @@ export const commentApi = createApi({
   tagTypes: ['Comments'],
   endpoints: (builder) => ({
     getComments: builder.query({
-      query: () => 'https://api.fake.rest/aa1af2b3-7f00-479d-be6b-85a5ef53e301/get',  
+      query: () => API_ENDPOINT,  
     }),
     addComments: builder.mutation({
       query: (body) => ({
-        url: 'https://api.fake.rest/aa1af2b3-7f00-479d-be6b-85a5ef53e301/post',
+        url: API_ENDPOINT,
         method: 'POST',
         body,
       }),
       invalidatesTags: ['Comments'],
     }),
+    updateCommentsLike: builder.mutation({
+      query: ({id, ...body}) => ({
+        url: `${API_ENDPOINT}/${id}`,
+        method: 'PUT',
+        body,
+      }),
+      invalidatesTags: ['Comments'],
+    }),
+    deleteComments: builder.mutation({
+      query: ( id ) => ({
+        url: `${API_ENDPOINT}/${id}`,
+        method: 'Delete',
+      }),
+      invalidatesTags: ['Comments'],
+    })
   }),
   })
 
 
-export const {useGetCommentsQuery, useAddCommentsMutation} = commentApi;
+export const {useGetCommentsQuery, useAddCommentsMutation, useUpdateCommentsLikeMutation, useDeleteCommentsMutation} = commentApi;
